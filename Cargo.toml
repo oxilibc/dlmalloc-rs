@@ -58,4 +58,7 @@ global = []
 # Enable very expensive debug checks in this crate
 debug = []
 
+# Make inner module public
+public-inner = []
+
 rustc-dep-of-std = ['core', 'compiler_builtins/rustc-dep-of-std']

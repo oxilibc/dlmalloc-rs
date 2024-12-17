@@ -2,6 +2,7 @@
 // source at ftp://g.oswego.edu/pub/misc/malloc.c
 //
 // The original source was written by Doug Lea and released to the public domain
+#![allow(missing_docs)]
 
 macro_rules! debug_assert {
     ($($arg:tt)*) => {

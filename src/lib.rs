@@ -23,7 +23,11 @@ use sys::System;
 #[cfg(feature = "global")]
 pub use self::global::{enable_alloc_after_fork, GlobalDlmalloc};
 
+#[cfg(not(feature = "public-inner"))]
 mod dlmalloc;
+#[cfg(feature = "public-inner")]
+pub mod dlmalloc;
+
 #[cfg(feature = "global")]
 mod global;
 
