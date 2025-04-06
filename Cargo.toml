@@ -25,7 +25,7 @@ features = ['global']
 doctest = false
 
 [target.'cfg(all(unix, not(target_arch = "wasm32")))'.dependencies]
-libc = { version = "0.2", default-features = false }
+libc = { version = "0.2", default-features = false, optional = true }
 
 [dependencies]
 # For more information on these dependencies see rust-lang/rust's
@@ -51,6 +51,7 @@ rand = { version = "0.8", features = ['small_rng'] }
 debug-assertions = true
 
 [features]
+default = ["libc"]
 # Enable implementations of the `GlobalAlloc` standard library API, exporting a
 # new `GlobalDlmalloc` as well which implements this trait.
 global = []
@@ -60,5 +61,7 @@ debug = []
 
 # Make inner module public
 public-inner = []
+
+libc = ["dep:libc"]
 
 rustc-dep-of-std = ['core', 'compiler_builtins/rustc-dep-of-std']

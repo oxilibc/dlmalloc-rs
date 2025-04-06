@@ -1850,6 +1850,7 @@ impl Segment {
 }
 
 #[cfg(test)]
+#[cfg(feature = "libc")]
 mod tests {
     use super::*;
     use crate::System;

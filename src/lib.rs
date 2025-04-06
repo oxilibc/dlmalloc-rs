@@ -18,6 +18,8 @@
 
 use core::cmp;
 use core::ptr;
+
+#[cfg(feature = "libc")]
 use sys::System;
 
 #[cfg(feature = "global")]
@@ -75,7 +77,9 @@ pub unsafe trait Allocator: Send {
 /// Instances of this type are used to allocate blocks of memory. For best
 /// results only use one of these. Currently doesn't implement `Drop` to release
 /// lingering memory back to the OS. That may happen eventually though!
-pub struct Dlmalloc<A = System>(dlmalloc::Dlmalloc<A>);
+pub struct Dlmalloc<#[cfg(not(feature = "libc"))] A, #[cfg(feature = "libc")] A = System>(
+    dlmalloc::Dlmalloc<A>,
+);
 
 cfg_if::cfg_if! {
     if #[cfg(target_family = "wasm")] {
@@ -87,7 +91,7 @@ cfg_if::cfg_if! {
     } else if #[cfg(target_os = "xous")] {
         #[path = "xous.rs"]
         mod sys;
-    } else if #[cfg(any(target_os = "linux", target_os = "macos"))] {
+    } else if #[cfg(all(any(target_os = "linux", target_os = "macos"), feature = "libc"))] {
         #[path = "unix.rs"]
         mod sys;
     } else {
@@ -96,6 +100,7 @@ cfg_if::cfg_if! {
     }
 }
 
+#[cfg(feature = "libc")]
 impl Dlmalloc<System> {
     /// Creates a new instance of an allocator
     pub const fn new() -> Dlmalloc<System> {
